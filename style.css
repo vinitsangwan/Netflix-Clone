@@ -1,0 +1,468 @@
+
+
+    body{
+      margin: 0;
+      padding: 0;
+    }
+   .background-image{
+    background-image: url(IN-en-20250825-TRIFECTA-perspective_a3209894-0b01-4ddb-b57e-f32165e20a3f_large.jpg);
+   width: 100%;
+   height: 800px;
+   opacity: 0.91;
+   background-color: black;
+   object-fit: cover;
+ box-sizing: content-box;
+  }
+
+  .logo{
+    display: flex;
+  }
+  select{
+    height: 60px;
+    width: 150px;
+    background-color: black;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    margin-left: 700px;
+    margin-top: 25px;
+    text-align: center;
+  }
+  select:active{
+    border: 2px solid white;
+  }
+  button{
+   height: 60px;
+   width: 150px;
+   font-size: 18px;
+   border-radius: 5px;
+   background-color: red;
+   color: white;
+   margin-top: 25px;
+   margin-left: 45px
+  }
+  button:hover{
+    background-color: rgb(216, 5, 5);
+  }
+ 
+  h1{
+    color: white;
+    display: block;
+    font-size: 45px;
+    font-weight: bolder;
+    margin-left: 550px;
+    margin-top: 150px;
+   font-family: sans-serif;
+
+  }
+  span{
+    display: block;
+    color: white;
+    font-size: 40px;
+    font-weight: bolder;
+    margin-left: 600px;
+    font-family: sans-serif;
+  }
+  h3{
+    display: block;
+    font-size: 20px;
+    color: white;
+    font-family: sans-serif;
+    font-weight: bold;
+    margin-left: 500px;
+    margin-top: 25px;
+    margin-bottom: 5px;
+  }
+  input{
+    width: 355px;
+    height: 75px;
+    font-size: 20px;
+    background-color: black;
+    color: white;
+    margin-left: 500px;
+    border-radius: 7px;
+
+  
+  }
+  .Get-started{
+     width: 220px;
+    height: 70px;
+    background-color: red; 
+
+  }
+  .main-part{
+    width: 100%;
+    background-color: black;
+    justify-content: space-evenly;
+    padding-top: 65px;
+  }
+h2{
+  font-size: 25px;
+  display: block;
+  font-family: sans-serif;
+  color: white;
+  margin-left: 60px;
+  padding-top: 55px;
+  
+}
+.images{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 55px;
+}
+.middle{
+  background-color: black;
+  width: 100%;
+  height: 700px;
+}
+.image1{
+    background-image: url(netfliximage1.png);
+    height: 300px;
+    width: 250px;
+    transition: height 1s, width 1s;
+}
+.image1:hover{
+    height: 303px;
+    width: 253px;
+}
+.image2{
+    background-image: url(netfliximage2.png);
+    height: 300px;
+    width: 262px;
+    transition: height 1s, width 1s;
+}
+.image2:hover{
+    height: 303px;
+    width: 265px;
+}
+.image3{
+    background-image: url(netfliximage3.png);
+    height: 292px;
+    width: 265px;
+    transition: height 1s , width 1s;
+}
+.image3:hover{
+    height: 295px;
+    width: 268px;
+}
+.image4{
+    background-image: url(netfliximage4.png);
+    height: 295px;
+    width: 265px;
+    transition: height 1s , width 1s;
+}
+.image4:hover{
+    height: 298px;
+    width: 268px;
+}
+.image5{
+    background-image: url(netfliximage5.png);
+    height: 295px;
+    width: 260px;
+    transition: height 1s , width 1s;
+}
+.image5:hover{
+  height: 298px;
+  width: 263px;
+}
+.image6{
+    background-image: url(netfliximage6.png);
+    height: 296px;
+    width: 262px;
+    transition: height 1s ,width 1s;
+}
+.image6:hover{
+    height: 299px;
+    width: 265px;
+}
+h4{
+  color: white;
+  font-size: 25px;
+  font-family: sans-serif;
+  margin-left: 60px;
+}
+.box1{
+  width: 650px;
+  height: 270px;
+  border: 1px solid rgb(94, 31, 94);
+  /*background: linear-gradient(to bottom,rgb(45,45,50),rgb(20,20,25));*/
+  margin-left: 60px;
+  border-radius: 8px;
+  background-color: #202025;
+  
+}
+.box1-title{
+   font-size: 25px;
+   display: block;
+   font-family: sans-serif;
+   color: white;
+   margin-left: 45px;
+}
+.box1-content{
+     font-size: 22px;
+   display: block;
+   font-family: sans-serif;
+   color: white;
+   margin-left: 35px;
+}
+.box1-image1{
+  margin-left: 530px;
+  margin-bottom: 5px;
+}
+.box2{
+    width: 710px;
+  height: 270px;
+  border: 1px solid rgb(94, 31, 94);
+  margin-left: 15px;
+ background-color: #1a1a39;
+   border-radius: 8px;
+}
+main{
+  display: flex;
+}
+.box2-title{
+   font-size: 25px;
+   display: block;
+   font-family: sans-serif;
+   color: white;
+   padding-left: 25px;
+}
+.box2-content{
+    font-size: 22px;
+   display: block;
+   font-family: sans-serif;
+   color: white;
+   padding-left: 25px;
+}
+.box2-image1{
+  float: right;
+}
+header{
+  display: flex;
+}
+.box3{
+   width: 650px;
+  height: 270px;
+  border: 1px solid rgb(94, 31, 94);
+   background-color: #202025;
+   border-radius: 8px;
+   margin-top: 15px;
+   margin-left: 60px;
+  
+}
+.box3-title{
+  font-size: 25px;
+   display: block;
+   font-family: sans-serif;
+   color: white;
+   padding-left: 25px;
+}
+.box3-content{
+   font-size: 22px;
+   display: block;
+   font-family: sans-serif;
+   color: white;
+   padding-left: 25px;
+}
+.box3-image1{
+  float: right;
+}
+.box4{
+    width: 710px;
+  height: 270px;
+  border: 1px solid rgb(94, 31, 94);
+    background-color: #1a1a39;
+   border-radius: 8px;
+   margin-top: 15px;
+   margin-left: 15px;
+}
+.box4-image1{
+  float: right;
+}
+.box4-content{
+   font-size: 22px;
+   display: block;
+   font-family: sans-serif;
+   color: white;
+   padding-left: 25px;
+}
+.box4-title{
+  font-size: 25px;
+   display: block;
+   font-family: sans-serif;
+   color: white;
+   padding-left: 25px;
+}
+.box5{
+  width: 100%;
+  height: 1400px;
+  background-color: black;
+}
+h5{
+font-size: 25px;
+display: block;
+color: white;
+margin-left: 60px;
+font-family: sans-serif;
+margin-bottom: 25px;
+}
+.box7{
+  width: 85%;
+  height: 65px;
+  margin-left: 60px;
+    border: 1px solid grey;
+     background-color: #202025;
+
+}
+.box7-content1{
+    color: white;
+     font-size: 27px;
+     font-family: sans-serif;
+     padding-left: 25px;
+    
+     
+}
+strong{
+  font-size: 40px;
+ float: inline-end;
+ padding-right: 35px;
+ font-weight: bolder;
+}
+.box8{
+   width: 85%;
+  height: 65px;
+  margin-left: 60px;
+    border: 1px solid grey;
+     background-color: #202025;
+     margin-top: 15px;
+}
+.box8-content1{
+    color: white;
+     font-size: 27px;
+     font-family: sans-serif;
+     padding-left: 25px;
+
+}
+.box9{
+   width: 85%;
+  height: 65px;
+  margin-left: 60px;
+    border: 1px solid grey;
+     background-color: #202025;
+     margin-top: 15px;
+}
+.box9-content1{
+    color: white;
+     font-size: 27px;
+     font-family: sans-serif;
+     padding-left: 25px;
+
+}
+.box10{
+   width: 85%;
+  height: 65px;
+  margin-left: 60px;
+    border: 1px solid grey;
+     background-color: #202025;
+     margin-top: 15px;
+}
+.box10-content1{
+    color: white;
+     font-size: 27px;
+     font-family: sans-serif;
+     padding-left: 25px;
+
+}
+.box11{
+   width: 85%;
+  height: 65px;
+  margin-left: 60px;
+    border: 1px solid grey;
+     background-color: #202025;
+     margin-top: 15px;
+}
+.box11-content1{
+    color: white;
+     font-size: 27px;
+     font-family: sans-serif;
+     padding-left: 25px;
+
+}
+.box12{
+   width: 85%;
+  height: 65px;
+  margin-left: 60px;
+    border: 1px solid grey;
+     background-color: #202025;
+     margin-top: 15px;
+}
+.box12-content1{
+    color: white;
+     font-size: 27px;
+     font-family: sans-serif;
+     padding-left: 25px;
+
+}
+.box13{
+  padding-top: 55px;
+  justify-content: center;
+}
+.box13-content{
+  color: rgb(191, 188, 188);
+  font-size: 22px;
+  margin-left: 65px;
+  padding-top: 5px;
+  padding-bottom: 15px;
+}
+  .box14 ul li{
+  color: rgb(191,188,188);
+  font-size: 18px;
+  list-style: none;
+  padding: 10px;
+  text-decoration: underline;
+  margin-left: 65px;
+}
+footer{
+  display: flex;
+  
+}
+.box15 ul li{
+   color: rgb(191,188,188);
+  font-size: 20px;
+  list-style: none;
+  padding: 10px;
+  text-decoration: underline;
+  margin-left: 65px;
+  padding-left: 165px;
+}
+.box16 ul li{
+   color: rgb(191,188,188);
+  font-size: 20px;
+  list-style: none;
+  padding: 10px;
+  text-decoration: underline;
+  margin-left: 65px;
+  padding-left: 185px;
+}
+.box17{
+  transform: translateX(-640px);
+
+}
+
+.box18{
+  display: block;
+  font-size: 20px;
+  color:  rgb(191,188,188);
+  margin-left: 65px;
+}
+.box19{
+    display: block;
+    padding-top: 15px;
+  font-size: 20px;
+  color:  rgb(191,188,188);
+  margin-left: 65px;
+}
+.box19 a{
+  color: rgb(59, 59, 175);
+  padding-top: 15px;
+}

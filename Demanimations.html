@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animations</title>
+    <style>
+        button{
+            height: 50px;
+            width: 150px;
+            background-color: blue;
+            color: white;
+            border-radius: 8px;
+            font-size: 15px;
+            animation: bouncing 0.5s ease 0s infinite alternate both;
+        }
+        @keyframes bouncing {
+            0% {
+          bottom: 0;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            }
+            100%{
+    bottom: 50px;
+    box-shadow: 0 50px 50px
+     rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <button>Sign In</button>
+</body>
+</html>
