@@ -6,49 +6,70 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const watchlistRoutes = require("./routes/watchlistRoutes");
+
 const app = express();
 
-// Middleware
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    process.env.CLIENT_URL,
+    ...(process.env.CLIENT_URLS || "").split(",")
+]
+    .filter(Boolean)
+    .map((origin) => origin.trim().replace(/\/$/, ""));
 
-app.use(cors({
-    origin: [//updated one 
-        "http://localhost:5173",
-        "http://localhost:5174"
-    ]
-}));
+app.use(
+    cors({
+        origin: (origin, callback) => {
+            if (
+                !origin ||
+                allowedOrigins.includes(origin.replace(/\/$/, ""))
+            ) {
+                return callback(null, true);
+            }
 
+            return callback(new Error("Origin not allowed by CORS"));
+        }
+    })
+);
 
 app.use(express.json());
+
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        console.error("MongoDB connection error:", error.message);
+
+        res.status(503).json({
+            success: false,
+            message: "Database temporarily unavailable"
+        });
+    }
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/watchlist", watchlistRoutes);
 
-// Test route
 app.get("/", (req, res) => {
     res.send("Netflix Clone Backend is Running!");
 });
 
-// Health check route
 app.get("/api/health", (req, res) => {
     res.status(200).json({
         success: true,
-        message: "Netflix Clone backend is running!",
+        message: "Netflix Clone backend is running!"
     });
 });
 
-// Start server after MongoDB connects
-const PORT = process.env.PORT || 5000;
+module.exports = app;
 
-const startServer = async () => {
-    try {
-        await connectDB();
+// Start a persistent local server only when run directly.
+if (require.main === module) {
+    const PORT = process.env.PORT || 5000;
 
-        app.listen(PORT, () => {
-            console.log(`Server running at http://localhost:${PORT}`);
-        });
-    } catch (error) {
-        console.error("Failed to start server:", error.message);
-        process.exit(1);
-    }
-};
-
-startServer();
+    app.listen(PORT, () => {
+        console.log(`Server running at http://localhost:${PORT}`);
+    });
+}
