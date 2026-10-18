@@ -19,7 +19,8 @@ app.use(
 app.use(express.json());
 
 app.use(async (req, res, next) => {
-    if (req.path === "/" || req.path === "/api/health") {
+    const p = req.path || req.url || "";
+    if (p === "/" || p === "/api/health") {
         return next();
     }
 
@@ -29,7 +30,7 @@ app.use(async (req, res, next) => {
     } catch (error) {
         console.error("MongoDB connection error:", error.message);
 
-        res.status(503).json({
+        return res.status(503).json({
             success: false,
             message: "Database temporarily unavailable"
         });
@@ -37,7 +38,9 @@ app.use(async (req, res, next) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
 app.use("/api/watchlist", watchlistRoutes);
+app.use("/watchlist", watchlistRoutes);
 
 app.get("/", (req, res) => {
     res.send("Netflix Clone Backend is Running!");
@@ -47,6 +50,14 @@ app.get("/api/health", (req, res) => {
     res.status(200).json({
         success: true,
         message: "Netflix Clone backend is running!"
+    });
+});
+
+app.use((err, req, res, next) => {
+    console.error("Server error:", err);
+    res.status(500).json({
+        success: false,
+        message: err.message || "Internal server error"
     });
 });
 

@@ -58,7 +58,13 @@ function Register() {
                 }
             );
 
-            const data = await response.json();
+            let data;
+            const text = await response.text();
+            try {
+                data = JSON.parse(text);
+            } catch {
+                throw new Error(text || `Server error (${response.status})`);
+            }
 
             if (!response.ok || !data.success) {
                 throw new Error(
@@ -71,10 +77,11 @@ function Register() {
                 state: { email: cleanEmail },
             });
         } catch (err) {
+            const msg = err.message || "";
             setError(
-                err.message === "Failed to fetch"
+                msg === "Failed to fetch" || msg.includes("NetworkError") || msg.includes("Failed to fetch")
                     ? "Cannot connect to the server. Please try again."
-                    : err.message
+                    : msg
             );
         } finally {
             setLoading(false);
