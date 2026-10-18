@@ -1,0 +1,694 @@
+
+/* ---------- Global styles ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+a,
+select,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+.netflix-app {
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+/* ---------- Hero section ---------- */
+
+.hero {
+  position: relative;
+  min-height: 700px;
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.55) 0%,
+      rgba(0, 0, 0, 0.52) 45%,
+      #000 100%
+    ),
+    url("/IN-en-20250825-TRIFECTA-perspective_a3209894-0b01-4ddb-b57e-f32165e20a3f_large.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-overlay {
+  min-height: 700px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.25),
+    transparent 55%
+  );
+}
+
+/* ---------- Navbar ---------- */
+
+.navbar {
+  width: min(100% - 64px, 1200px);
+  min-height: 105px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.netflix-logo {
+  display: block;
+  width: 175px;
+  height: auto;
+  object-fit: contain;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.language-select,
+.footer-language {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid #888;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 15px;
+}
+
+.sign-in-btn {
+  min-height: 40px;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 4px;
+  background: #e50914;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  transition: background 0.2s ease;
+}
+
+.sign-in-btn:hover {
+  background: #c11119;
+}
+
+/* ---------- Hero content ---------- */
+
+.hero-content {
+  width: min(100% - 40px, 900px);
+  margin: 105px auto 0;
+  padding-bottom: 90px;
+  text-align: center;
+}
+
+.hero-content h1 {
+  max-width: 800px;
+  margin: 0 auto 20px;
+  font-size: clamp(36px, 5vw, 60px);
+  line-height: 1.12;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.hero-subtitle {
+  margin: 0 0 25px;
+  font-size: clamp(20px, 2.5vw, 27px);
+  font-weight: 600;
+}
+
+.hero-description {
+  margin: 0 auto 20px;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* ---------- Email forms ---------- */
+
+.email-form {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 10px;
+}
+
+.email-form input {
+  flex: 1;
+  min-width: 0;
+  min-height: 58px;
+  padding: 16px;
+  border: 1px solid #888;
+  border-radius: 4px;
+  outline: none;
+  background: rgba(20, 20, 20, 0.8);
+  color: #fff;
+  font-size: 16px;
+}
+
+.email-form input::placeholder {
+  color: #c5c5c5;
+}
+
+.email-form input:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.get-started-btn {
+  min-height: 58px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 4px;
+  background: #e50914;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.get-started-btn:hover {
+  background: #c11119;
+}
+
+.get-started-btn span {
+  padding-left: 6px;
+  font-size: 28px;
+  vertical-align: -2px;
+}
+
+/* ---------- Trending section ---------- */
+
+.trending-section,
+.features-section,
+.faq-section,
+.footer {
+  width: 100%;
+  padding-right: max(5%, calc((100% - 1200px) / 2));
+  padding-left: max(5%, calc((100% - 1200px) / 2));
+}
+
+.trending-section {
+  padding-top: 30px;
+  padding-bottom: 55px;
+  background: #000;
+}
+
+.trending-section h2,
+.features-section > h2,
+.faq-section > h2 {
+  margin: 0 0 25px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.trending-list {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.trending-card {
+  position: relative;
+  min-width: 0;
+  padding-left: 12px;
+  transition: transform 0.25s ease;
+}
+
+.trending-card:hover {
+  transform: scale(1.05);
+}
+
+.trending-card img {
+  display: block;
+  width: 100%;
+  height: 250px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.trending-number {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: -4px;
+  color: #000;
+  font-size: 95px;
+  line-height: 0.95;
+  font-weight: 900;
+  -webkit-text-stroke: 2px #ddd;
+  text-shadow: 0 2px 8px #000;
+}
+
+/* ---------- Features section ---------- */
+
+.features-section {
+  padding-top: 15px;
+  padding-bottom: 65px;
+  background: #000;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.feature-card {
+  position: relative;
+  display: flex;
+  min-height: 270px;
+  flex-direction: column;
+  padding: 28px;
+  overflow: hidden;
+  border: 1px solid #37304a;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #202025, #17172b);
+}
+
+.feature-card h3 {
+  max-width: 450px;
+  margin: 0 0 15px;
+  font-size: 25px;
+  line-height: 1.3;
+}
+
+.feature-card p {
+  max-width: 470px;
+  margin: 0;
+  color: #d1d1d1;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.feature-image {
+  display: flex;
+  min-height: 100px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.feature-image img {
+  display: block;
+  max-width: 120px;
+  max-height: 100px;
+  object-fit: contain;
+}
+
+/* ---------- FAQ section ---------- */
+
+.faq-section {
+  padding-top: 25px;
+  padding-bottom: 60px;
+  background: #000;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faq-item {
+  background: #2d2d2d;
+  transition: background 0.2s ease;
+}
+
+.faq-item:hover {
+  background: #414141;
+}
+
+.faq-item summary {
+  display: flex;
+  min-height: 78px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 20px 25px;
+  font-size: 21px;
+  line-height: 1.4;
+  list-style: none;
+  cursor: pointer;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-plus {
+  flex-shrink: 0;
+  font-size: 38px;
+  font-weight: 300;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.faq-item[open] .faq-plus {
+  transform: rotate(45deg);
+}
+
+.faq-item > p {
+  margin: 0;
+  padding: 0 25px 25px;
+  color: #f3f3f3;
+  font-size: 19px;
+  line-height: 1.6;
+}
+
+.bottom-cta {
+  padding-top: 50px;
+  text-align: center;
+}
+
+.bottom-cta > p {
+  margin: 0 auto 20px;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  padding-top: 10px;
+  padding-bottom: 55px;
+  background: #000;
+  color: #b3b3b3;
+}
+
+.contact-text {
+  margin: 0 0 28px;
+  font-size: 16px;
+}
+
+.contact-text a,
+.footer-links a {
+  color: #b3b3b3;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 25px;
+}
+
+.footer-links ul {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-links li {
+  font-size: 14px;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.footer-language {
+  margin-top: 35px;
+}
+
+.country-name {
+  margin-top: 28px;
+  font-size: 14px;
+}
+
+.recaptcha-text {
+  margin-top: 22px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ---------- Responsive tablet layout ---------- */
+
+@media (max-width: 900px) {
+  .navbar {
+    width: calc(100% - 40px);
+  }
+
+  .netflix-logo {
+    width: 140px;
+  }
+
+  .hero-content {
+    margin-top: 100px;
+  }
+
+  .trending-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .trending-card img {
+    height: 230px;
+  }
+
+  .features-grid {
+    gap: 12px;
+  }
+
+  .feature-card {
+    padding: 22px;
+  }
+
+  .feature-card h3 {
+    font-size: 22px;
+  }
+
+  .feature-card p {
+    font-size: 16px;
+  }
+
+  .footer-links {
+    gap: 15px;
+  }
+}
+
+/* ---------- Responsive mobile layout ---------- */
+
+@media (max-width: 600px) {
+  .hero,
+  .hero-overlay {
+    min-height: 650px;
+  }
+
+  .navbar {
+    width: calc(100% - 32px);
+    min-height: 85px;
+    gap: 10px;
+  }
+
+  .netflix-logo {
+    width: 105px;
+  }
+
+  .nav-actions {
+    gap: 8px;
+  }
+
+  .language-select {
+    max-width: 100px;
+    min-height: 35px;
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .sign-in-btn {
+    min-height: 35px;
+    padding: 7px 11px;
+    font-size: 13px;
+  }
+
+  .hero-content {
+    width: calc(100% - 36px);
+    margin-top: 100px;
+    padding-bottom: 60px;
+  }
+
+  .hero-content h1 {
+    font-size: 34px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-subtitle {
+    font-size: 19px;
+  }
+
+  .hero-description,
+  .bottom-cta > p {
+    font-size: 15px;
+  }
+
+  .email-form {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .email-form input {
+    width: 100%;
+    min-height: 54px;
+  }
+
+  .get-started-btn {
+    align-self: center;
+    min-height: 50px;
+    padding: 10px 20px;
+    font-size: 18px;
+  }
+
+  .trending-section,
+  .features-section,
+  .faq-section,
+  .footer {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .trending-section h2,
+  .features-section > h2,
+  .faq-section > h2 {
+    font-size: 22px;
+  }
+
+  .trending-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 12px;
+  }
+
+  .trending-card {
+    padding-left: 10px;
+  }
+
+  .trending-card img {
+    height: 220px;
+  }
+
+  .trending-number {
+    font-size: 75px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-card {
+    min-height: 240px;
+    padding: 24px;
+  }
+
+  .feature-card h3 {
+    font-size: 22px;
+  }
+
+  .feature-card p {
+    font-size: 16px;
+  }
+
+  .faq-item summary {
+    min-height: 70px;
+    padding: 18px;
+    font-size: 18px;
+  }
+
+  .faq-plus {
+    font-size: 30px;
+  }
+
+  .faq-item > p {
+    padding: 0 18px 20px;
+    font-size: 16px;
+  }
+
+  .bottom-cta {
+    padding-top: 35px;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 15px;
+  }
+
+  .footer-links li {
+    font-size: 13px;
+  }
+}
+
+/* ---------- Small mobile screens ---------- */
+
+@media (max-width: 360px) {
+  .navbar {
+    width: calc(100% - 20px);
+  }
+
+  .netflix-logo {
+    width: 85px;
+  }
+
+  .nav-actions {
+    gap: 5px;
+  }
+
+  .language-select {
+    max-width: 85px;
+  }
+
+  .sign-in-btn {
+    padding: 6px 8px;
+  }
+
+  .hero-content h1 {
+    font-size: 29px;
+  }
+
+  .trending-card img {
+    height: 180px;
+  }
+}

@@ -1,0 +1,133 @@
+
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./Auth.css";
+
+function Register() {
+    const navigate = useNavigate();
+
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        setError("");
+
+        const cleanName = name.trim();
+        const cleanEmail = email.trim().toLowerCase();
+
+        if (!cleanName) {
+            setError("Please enter your name.");
+            return;
+        }
+
+        if (password.length < 8) {
+            setError("Password must contain at least 8 characters.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch(
+                "http://localhost:5000/api/auth/register",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        name: cleanName,
+                        email: cleanEmail,
+                        password,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(
+                    data.message || "Registration failed"
+                );
+            }
+
+            // Registration succeeded. Continue to login.
+            navigate("/login", {
+                state: { email: cleanEmail },
+            });
+        } catch (err) {
+            setError(
+                err.message === "Failed to fetch"
+                    ? "Cannot connect to the server. Please try again."
+                    : err.message
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <main className="auth-page">
+            <Link to="/" className="auth-logo">
+                NETFLIX
+            </Link>
+
+            <form className="auth-card" onSubmit={handleRegister}>
+                <h1>Create Account</h1>
+
+                <input
+                    type="text"
+                    placeholder="Full name"
+                    autoComplete="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+
+                <input
+                    type="email"
+                    placeholder="Email address"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+
+                <input
+                    type="password"
+                    placeholder="Password (minimum 8 characters)"
+                    autoComplete="new-password"
+                    minLength={8}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+
+                {error && (
+                    <p className="auth-error" role="alert">
+                        {error}
+                    </p>
+                )}
+
+                <button type="submit" disabled={loading}>
+                    {loading ? "Creating account..." : "Sign Up"}
+                </button>
+
+                <p>
+                    Already have an account?{" "}
+                    <Link to="/login">Sign in</Link>
+                </p>
+
+                <Link to="/" className="back-home">
+                    ← Back to home
+                </Link>
+            </form>
+        </main>
+    );
+}
+
+export default Register;

@@ -3,15 +3,35 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Register a new user
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password } = req.body || {};
 
-        if (!name || !email || !password) {
+        if (
+            typeof name !== "string" ||
+            typeof email !== "string" ||
+            typeof password !== "string"
+        ) {
             return res.status(400).json({
                 success: false,
-                message: "Please provide name, email, and password"
+                message: "Please provide a valid name, email, and password"
+            });
+        }
+
+        const normalizedName = name.trim();
+        const normalizedEmail = email.trim().toLowerCase();
+
+        if (!normalizedName || !normalizedEmail || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Name, email, and password are required"
+            });
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+            return res.status(400).json({
+                success: false,
+                message: "Please enter a valid email address"
             });
         }
 
@@ -21,8 +41,6 @@ const registerUser = async (req, res) => {
                 message: "Password must be at least 8 characters"
             });
         }
-
-        const normalizedEmail = email.trim().toLowerCase();
 
         const existingUser = await User.findOne({
             email: normalizedEmail
@@ -38,7 +56,7 @@ const registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const user = await User.create({
-            name: name.trim(),
+            name: normalizedName,
             email: normalizedEmail,
             password: hashedPassword
         });
@@ -49,10 +67,25 @@ const registerUser = async (req, res) => {
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                createdAt: user.createdAt
             }
         });
     } catch (error) {
+        if (error.code === 11000) {
+            return res.status(409).json({
+                success: false,
+                message: "Email is already registered"
+            });
+        }
+
+        if (error.name === "ValidationError") {
+            return res.status(400).json({
+                success: false,
+                message: "Please check the registration details"
+            });
+        }
+
         console.error("Registration error:", error.message);
 
         return res.status(500).json({
@@ -62,20 +95,26 @@ const registerUser = async (req, res) => {
     }
 };
 
-// Log in an existing user
 const loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = req.body || {};
 
-        if (!email || !password) {
+        if (
+            typeof email !== "string" ||
+            typeof password !== "string" ||
+            !email.trim() ||
+            !password
+        ) {
             return res.status(400).json({
                 success: false,
                 message: "Please provide email and password"
             });
         }
 
+        const normalizedEmail = email.trim().toLowerCase();
+
         const user = await User.findOne({
-            email: email.trim().toLowerCase()
+            email: normalizedEmail
         });
 
         if (!user) {

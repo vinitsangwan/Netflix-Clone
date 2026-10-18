@@ -5,18 +5,22 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
-
+const watchlistRoutes = require("./routes/watchlistRoutes");
 const app = express();
 
 // Middleware
-app.use(
-    cors({
-        origin: "http://localhost:5173",
-    })
-);
+
+app.use(cors({
+    origin: [//updated one 
+        "http://localhost:5173",
+        "http://localhost:5174"
+    ]
+}));
+
 
 app.use(express.json());
 app.use("/api/auth", authRoutes);
+app.use("/api/watchlist", watchlistRoutes);
 
 // Test route
 app.get("/", (req, res) => {

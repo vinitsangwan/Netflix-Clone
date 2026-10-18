@@ -1,27 +1,30 @@
 
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(//user schema for the database -it is the structure of the user data that will be stored in the database
-    
+const userSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            required: [true, "Name is required"],
             trim: true
         },
 
         email: {
             type: String,
-            required: true,
+            required: [true, "Email is required"],
             unique: true,
             lowercase: true,
-            trim: true
+            trim: true,
+            match: [
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                "Please enter a valid email address"
+            ]
         },
 
         password: {
             type: String,
-            required: true,
-            minlength: 8
+            required: [true, "Password is required"],
+            minlength: [8, "Password must be at least 8 characters"]
         }
     },
     {
