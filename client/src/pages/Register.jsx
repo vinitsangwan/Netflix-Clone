@@ -3,12 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 const API_URL = (
-    import.meta.env.VITE_API_URL ||
-    (typeof window !== "undefined" &&
-    (window.location.hostname === "localhost" ||
-     window.location.hostname === "127.0.0.1")
-        ? "http://localhost:5000"
-        : "https://netflix-clone-hvfb.vercel.app")
+    import.meta.env.VITE_API_URL || ""
 ).replace(/\/$/, "");
 
 function Register() {
