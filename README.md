@@ -1,3 +1,3 @@
 # Netflix-Clone
-It is project made by me using HTML and CSS.
+It is project made by me using MERN Stack.
 
