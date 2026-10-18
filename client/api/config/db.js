@@ -16,8 +16,8 @@ const connectDB = async () => {
     if (!connectionPromise) {
         connectionPromise = mongoose
             .connect(uri, {
-                serverSelectionTimeoutMS: 5000,
-                connectTimeoutMS: 5000,
+                serverSelectionTimeoutMS: 10000,
+                connectTimeoutMS: 10000,
             })
             .catch((error) => {
                 connectionPromise = null;
