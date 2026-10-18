@@ -1,18 +1,28 @@
 
 const mongoose = require("mongoose");
 
-const connectDB = async () => {
-    try {
-        if (!process.env.MONGO_URI) {
-            throw new Error("MONGO_URI is missing in .env");
-        }
+const DEFAULT_MONGO_URI =
+    "mongodb+srv://netflix:netflix1234@cluster0.7bb3kd4.mongodb.net/netflix_clone?retryWrites=true&w=majority";
 
-        await mongoose.connect(process.env.MONGO_URI);
-        console.log("MongoDB connected successfully!");
-    } catch (error) {
-        console.error("MongoDB connection failed:", error.message);
-        process.exit(1);
+let connectionPromise;
+
+const connectDB = async () => {
+    if (mongoose.connection.readyState >= 1) {
+        return mongoose.connection;
     }
+
+    const uri = process.env.MONGO_URI || DEFAULT_MONGO_URI;
+
+    if (!connectionPromise) {
+        connectionPromise = mongoose
+            .connect(uri)
+            .catch((error) => {
+                connectionPromise = null;
+                throw error;
+            });
+    }
+
+    return connectionPromise;
 };
 
 module.exports = connectDB;

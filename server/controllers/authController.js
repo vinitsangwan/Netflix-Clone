@@ -3,6 +3,9 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const DEFAULT_JWT_SECRET =
+    "450ff43b521991f698b67b008148da4010f5969cd61cfc1931b307befdbda207";
+
 const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body || {};
@@ -136,13 +139,11 @@ const loginUser = async (req, res) => {
             });
         }
 
-        if (!process.env.JWT_SECRET) {
-            throw new Error("JWT_SECRET is missing in .env");
-        }
+        const jwtSecret = process.env.JWT_SECRET || DEFAULT_JWT_SECRET;
 
         const token = jwt.sign(
             { userId: user._id.toString() },
-            process.env.JWT_SECRET,
+            jwtSecret,
             { expiresIn: "7d" }
         );
 

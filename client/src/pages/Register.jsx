@@ -4,14 +4,21 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
 const API_URL = (
     import.meta.env.VITE_API_URL ||
-    "https://netflix-clone-hvfb.vercel.app"
+    (typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+     window.location.hostname === "127.0.0.1")
+        ? "http://localhost:5000"
+        : "https://netflix-clone-hvfb.vercel.app")
 ).replace(/\/$/, "");
 
 function Register() {
     const navigate = useNavigate();
 
+    const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+    const initialEmail = searchParams?.get("email") || "";
+
     const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(initialEmail);
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
