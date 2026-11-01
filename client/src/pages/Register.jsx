@@ -2,16 +2,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Auth.css";
-const API_URL = (
+const API_URL = (//this is a constant that holds the base URL for the API. It retrieves the value from an environment variable (VITE_API_URL) and removes any trailing slashes.
     import.meta.env.VITE_API_URL || ""
 ).replace(/\/$/, "");
 
 function Register() {
     const navigate = useNavigate();
 
-    const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+    const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;//this line checks if the window object is defined (which it is in a browser environment) and creates a new URLSearchParams object from the current URL's query string. If the window object is not defined (e.g., during server-side rendering), it sets searchParams to null.
     const initialEmail = searchParams?.get("email") || "";
+//use state hooks to manage the form input values and other states like error messages and loading status.
 
+//this useState hook initializes the name state variable to an empty string. It will hold the user's full name input.
     const [name, setName] = useState("");
     const [email, setEmail] = useState(initialEmail);
     const [password, setPassword] = useState("");
@@ -22,7 +24,8 @@ function Register() {
         e.preventDefault();
         setError("");
 
-        const cleanName = name.trim();
+//trim is used to remove any leading or trailing whitespace from the input values. The email is also converted to lowercase to ensure consistency and avoid case sensitivity issues during registration.
+        const cleanName = name.trim();//this line trims any leading or trailing whitespace from the name input value and assigns it to the cleanName variable.
         const cleanEmail = email.trim().toLowerCase();
 
         if (!cleanName) {

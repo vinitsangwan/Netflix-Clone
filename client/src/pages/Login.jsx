@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState } from "react";//useState is a React hook that allows you to add state to functional components.
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Auth.css";
 const API_URL = (
@@ -18,9 +18,9 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         setError("");
-        setLoading(true);
+        setLoading(true);//this sets the loading state to true, indicating that the login process is in progress.
 
-        try {
+        try {//this block of code is responsible for sending a login request to the server and handling the response.
             const response = await fetch(
                `${API_URL}/api/auth/login`,
                 {
@@ -35,7 +35,7 @@ function Login() {
                 }
             );
 
-            let data;
+            let data;//this variable will hold the parsed JSON response from the server.
             const text = await response.text();
             try {
                 data = JSON.parse(text);

@@ -1,12 +1,57 @@
-
+import { useRef } from 'react';
 import '../App.css';
-const trendingImages = [
-  'netfliximage1.png',
-  'netfliximage2.png',
-  'netfliximage3.png',
-  'netfliximage4.png',
-  'netfliximage5.png',
-  'netfliximage6.png',
+
+const trendingItems = [
+  {
+    title: 'Wednesday',
+    image: 'https://image.tmdb.org/t/p/w500/36xXlhEpQqVVPuiZhfoQuaY4OlA.jpg',
+    url: 'https://www.netflix.com/search?q=Wednesday',
+  },
+  {
+    title: 'Stranger Things',
+    image: 'https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg',
+    url: 'https://www.netflix.com/search?q=Stranger%20Things',
+  },
+  {
+    title: 'Squid Game',
+    image: 'https://image.tmdb.org/t/p/w500/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg',
+    url: 'https://www.netflix.com/search?q=Squid%20Game',
+  },
+  {
+    title: 'Money Heist',
+    image: 'https://image.tmdb.org/t/p/w500/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg',
+    url: 'https://www.netflix.com/search?q=Money%20Heist',
+  },
+  {
+    title: 'Lucifer',
+    image: 'https://image.tmdb.org/t/p/w500/ekZobS8isE6mA53RAiGDG93hBxL.jpg',
+    url: 'https://www.netflix.com/search?q=Lucifer',
+  },
+  {
+    title: 'Dhurandhar',
+    image: 'https://upload.wikimedia.org/wikipedia/en/c/ce/Dhurandhar_poster.jpg',
+    url: 'https://www.netflix.com/search?q=Dhurandhar',
+  },
+  {
+    title: 'Breaking Bad',
+    image: 'https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg',
+    url: 'https://www.netflix.com/search?q=Breaking%20Bad',
+  },
+  {
+    title: 'Peaky Blinders',
+    image: 'https://image.tmdb.org/t/p/w500/vUUqzWa2LnHIVqkaKVlVGkVcZIW.jpg',
+    url: 'https://www.netflix.com/search?q=Peaky%20Blinders',
+  },
+  {
+    title: 'All of Us Are Dead',
+    image: 'https://image.tmdb.org/t/p/w500/pTEFqAjLd5YTsMD6NSUxV6Dq7A6.jpg',
+    url: 'https://www.netflix.com/search?q=All%20of%20Us%20Are%20Dead',
+  },
+  {
+    title: 'Bridgerton',
+    image: 'https://image.tmdb.org/t/p/w500/luoKpgVwi1E5nQsi7W0UuKHu2Rq.jpg',
+    url: 'https://www.netflix.com/search?q=Bridgerton',
+  },
 ];
 
 const features = [
@@ -36,7 +81,7 @@ const features = [
   },
 ];
 
-//use of Javascript here to make buttond working 
+//use of Javascript here to make button working 
 const faqs = [
   {
     question: 'What is Netflix?',
@@ -71,6 +116,18 @@ const faqs = [
 ];
 
 function Home() {
+  const carouselRef = useRef(null);
+
+  const handleScroll = (direction) => {
+    if (carouselRef.current) {
+      const scrollAmount = carouselRef.current.clientWidth * 0.75;
+      carouselRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   const handleGetStarted = (event) => {
     event.preventDefault();
 
@@ -155,16 +212,52 @@ function Home() {
         </div>
       </section>
 
+      {/* Netflix Signature Glowing Red Arc Divider */}
+      <div className="netflix-red-curve" aria-hidden="true">
+        <div className="curve-line"></div>
+      </div>
+
       <section className="trending-section">
         <h2>Trending Now</h2>
 
-        <div className="trending-list">
-          {trendingImages.map((image, index) => (//used map function to loop through the images and display them in the trending section
-            <div className="trending-card" key={image}>
-              <span className="trending-number">{index + 1}</span>
-              <img src={`/${image}`} alt={`Trending title ${index + 1}`} />
-            </div>
-          ))}
+        <div className="trending-wrapper">
+          <button
+            className="carousel-btn prev-btn"
+            onClick={() => handleScroll('left')}
+            aria-label="Previous"
+            type="button"
+          >
+            ‹
+          </button>
+
+          <div className="trending-list" ref={carouselRef}>
+            {trendingItems.map((item, index) => (
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="trending-card"
+                key={`${item.title}-${index}`}
+                title={item.title}
+              >
+                <span className="trending-number">{index + 1}</span>
+                <img
+                  src={item.image.startsWith('http') ? item.image : `/${item.image}`}
+                  alt={item.title}
+                  referrerPolicy="no-referrer"
+                />
+              </a>
+            ))}
+          </div>
+
+          <button
+            className="carousel-btn next-btn"
+            onClick={() => handleScroll('right')}
+            aria-label="Next"
+            type="button"
+          >
+            ›
+          </button>
         </div>
       </section>
 

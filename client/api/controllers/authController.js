@@ -1,4 +1,4 @@
-
+// This controller is responsible for handling user registration and login requests.
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -45,6 +45,7 @@ const registerUser = async (req, res) => {
             });
         }
 
+        //this block of code checks if a user with the provided email already exists in the database. If an existing user is found, it returns a 409 Conflict response indicating that the email is already registered. If no existing user is found, it proceeds to hash the password and create a new user in the database.
         const existingUser = await User.findOne({
             email: normalizedEmail
         });
@@ -56,6 +57,7 @@ const registerUser = async (req, res) => {
             });
         }
 
+        //this line hashes the user's password using bcrypt with a salt factor of 12. The hashed password is then stored in the database instead of the plain text password, enhancing security by protecting user credentials from being easily compromised in case of a data breach.
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const user = await User.create({
@@ -81,7 +83,7 @@ const registerUser = async (req, res) => {
                 message: "Email is already registered"
             });
         }
-
+//this block of code handles validation errors that may occur during the registration process. If a validation error is detected (e.g., missing required fields, invalid data formats), it returns a 400 Bad Request response with a message prompting the user to check their registration details. For any other unexpected errors, it logs the error message to the console and returns a 500 Internal Server Error response indicating a server-side issue during registration.
         if (error.name === "ValidationError") {
             return res.status(400).json({
                 success: false,
@@ -114,6 +116,7 @@ const loginUser = async (req, res) => {
             });
         }
 
+  //normalizes the email by trimming whitespace and converting it to lowercase to ensure consistency when checking against stored user records in the database.
         const normalizedEmail = email.trim().toLowerCase();
 
         const user = await User.findOne({

@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
     try {
         const { movieId, title, posterPath, releaseDate } = req.body;
 
-        if (
+        if(
             !Number.isSafeInteger(movieId) ||
             movieId <= 0 ||
             typeof title !== "string" ||
