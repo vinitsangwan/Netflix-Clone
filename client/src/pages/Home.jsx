@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import '../App.css';
 
 const trendingItems = [
@@ -54,69 +54,196 @@ const trendingItems = [
   },
 ];
 
-const features = [
-  {
-    title: 'Enjoy on your TV',
-    description:
-      'Watch on smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players and more.',
-    image: 'box1netfliximage-removebg-preview.png',
+const content = {
+  English: {
+    signIn: 'Sign In',
+    heroTitle: 'Unlimited movies, TV shows and more',
+    heroSubtitle: 'Watch anywhere. Cancel anytime.',
+    heroDescription:
+      'Ready to watch? Enter your email to create or restart your membership.',
+    emailPlaceholder: 'Email address',
+    getStarted: 'Get Started',
+    trendingTitle: 'Trending Now',
+    reasonsTitle: 'More reasons to join',
+    faqTitle: 'Frequently Asked Questions',
+    contactText: 'Questions? Call',
+    faqLink: 'FAQ',
+    mediaCenter: 'Media Center',
+    waysToWatch: 'Ways to Watch',
+    cookiePreferences: 'Cookie Preferences',
+    speedTest: 'Speed Test',
+    helpCentre: 'Help Centre',
+    investorRelations: 'Investor Relations',
+    termsOfUse: 'Terms of Use',
+    corporateInformation: 'Corporate Information',
+    legalNotices: 'Legal Notices',
+    account: 'Account',
+    jobs: 'Jobs',
+    privacy: 'Privacy',
+    contactUs: 'Contact Us',
+    onlyOnNetflix: 'Only on Netflix',
+    country: 'Netflix India',
+    disclaimer:
+      'This page is a student-made Netflix-style clone and is not an official Netflix website.',
+    emailRequiredAlert: 'Please enter your email address.',
+    emailValidAlert: 'Please enter a valid email address.',
+    features: [
+      {
+        title: 'Enjoy on your TV',
+        description:
+          'Watch on smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players and more.',
+        image: 'box1netfliximage-removebg-preview.png',
+      },
+      {
+        title: 'Download your shows to watch offline',
+        description:
+          'Save your favourites easily and always have something to watch.',
+        image: 'box2netfliximage-removebg-preview.png',
+      },
+      {
+        title: 'Watch everywhere',
+        description:
+          'Stream unlimited movies and TV shows on your phone, tablet, laptop and TV.',
+        image: 'box3netfliximage-removebg-preview.png',
+      },
+      {
+        title: 'Create profiles for kids',
+        description:
+          'Send kids on adventures with their favourite characters in a space made just for them — free with your membership.',
+        image: 'box4netfliximage-removebg-preview.png',
+      },
+    ],
+    faqs: [
+      {
+        question: 'What is Netflix?',
+        answer:
+          'Netflix is a streaming service offering a wide variety of TV shows, movies, documentaries and more.',
+      },
+      {
+        question: 'How much does Netflix cost?',
+        answer:
+          'Plans and prices depend on the membership offered in your region. Visit the official Netflix website for current pricing.',
+      },
+      {
+        question: 'Where can I watch?',
+        answer:
+          'You can watch on supported smart TVs, phones, tablets, computers and other compatible devices.',
+      },
+      {
+        question: 'How do I cancel?',
+        answer:
+          'You can manage or cancel your membership through your account settings on the official Netflix website.',
+      },
+      {
+        question: 'What can I watch on Netflix?',
+        answer:
+          'Netflix offers movies, series, documentaries, and other entertainment. Availability varies by region.',
+      },
+      {
+        question: 'Is Netflix good for kids?',
+        answer:
+          'Netflix offers kids profiles and parental controls to help families manage what children can watch.',
+      },
+    ],
   },
-  {
-    title: 'Download your shows to watch offline',
-    description:
-      'Save your favourites easily and always have something to watch.',
-    image: 'box2netfliximage-removebg-preview.png',
+  Hindi: {
+    signIn: 'साइन इन करें',
+    heroTitle: 'अनलिमिटेड फ़िल्में, टीवी शो और बहुत कुछ',
+    heroSubtitle: 'जहाँ चाहें देखें. जब चाहें कैंसल करें.',
+    heroDescription:
+      'देखने के लिए तैयार हैं? अपनी मेंबरशिप बनाने या रीस्टार्ट करने के लिए अपना ईमेल डालें.',
+    emailPlaceholder: 'ईमेल एड्रेस',
+    getStarted: 'शुरू करें',
+    trendingTitle: 'अभी ट्रेंड कर रहे हैं',
+    reasonsTitle: 'शामिल होने के और कारण',
+    faqTitle: 'अक्सर पूछे जाने वाले सवाल',
+    contactText: 'सवाल हैं? कॉल करें',
+    faqLink: 'FAQ',
+    mediaCenter: 'मीडिया सेंटर',
+    waysToWatch: 'देखने के तरीके',
+    cookiePreferences: 'कुकी प्राथमिकताएं',
+    speedTest: 'स्पीड टेस्ट',
+    helpCentre: 'सहायता केंद्र',
+    investorRelations: 'निवेशक संबंध',
+    termsOfUse: 'उपयोग की शर्तें',
+    corporateInformation: 'कंपनी की जानकारी',
+    legalNotices: 'कानूनी सूचनाएं',
+    account: 'अकाउंट',
+    jobs: 'नौकरियां',
+    privacy: 'गोपनीयता',
+    contactUs: 'हमसे संपर्क करें',
+    onlyOnNetflix: 'सिर्फ़ Netflix पर',
+    country: 'Netflix भारत',
+    disclaimer:
+      'यह पेज एक छात्र द्वारा बनाया गया Netflix-स्टाइल क्लोन है और यह आधिकारिक Netflix वेबसाइट नहीं है.',
+    emailRequiredAlert: 'कृपया अपना ईमेल एड्रेस दर्ज करें।',
+    emailValidAlert: 'कृपया एक मान्य ईमेल एड्रेस दर्ज करें।',
+    features: [
+      {
+        title: 'अपने टीवी पर आनंद लें',
+        description:
+          'स्मार्ट टीवी, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray प्लेयर और अन्य पर देखें.',
+        image: 'box1netfliximage-removebg-preview.png',
+      },
+      {
+        title: 'ऑफ़लाइन देखने के लिए अपने शो डाउनलोड करें',
+        description:
+          'अपने पसंदीदा शो आसानी से सेव करें और हमेशा कुछ न कुछ देखने के लिए तैयार रखें.',
+        image: 'box2netfliximage-removebg-preview.png',
+      },
+      {
+        title: 'हर जगह देखें',
+        description:
+          'अपने फ़ोन, टैबलेट, लैपटॉप और टीवी पर अनलिमिटेड फ़िल्में और टीवी शो स्ट्रीम करें.',
+        image: 'box3netfliximage-removebg-preview.png',
+      },
+      {
+        title: 'बच्चों के लिए प्रोफ़ाइल बनाएं',
+        description:
+          'बच्चों को उनके पसंदीदा किरदारों के साथ रोमांचक सफ़र पर भेजें — अपनी मेंबरशिप के साथ मुफ़्त.',
+        image: 'box4netfliximage-removebg-preview.png',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Netflix क्या है?',
+        answer:
+          'Netflix एक स्ट्रीमिंग सर्विस है जिसके ज़रिए आप इंटरनेट से जुड़े हज़ारों डिवाइस पर तरह-तरह के टीवी शो, फ़िल्में, डॉक्युमेंट्रीज़ वगैरह देख सकते हैं.',
+      },
+      {
+        question: 'Netflix की कीमत कितनी है?',
+        answer:
+          'अपने स्मार्टफ़ोन, टैबलेट, स्मार्ट टीवी, लैपटॉप या स्ट्रीमिंग डिवाइस पर एक तय मासिक शुल्क पर Netflix देखें. प्लान आपके क्षेत्र के अनुसार अलग-अलग होते हैं.',
+      },
+      {
+        question: 'मैं कहाँ देख सकता हूँ?',
+        answer:
+          'आप समर्थित स्मार्ट टीवी, फ़ोन, टैबलेट, कंप्यूटर और अन्य संगत डिवाइस पर कहीं भी, कभी भी देख सकते हैं.',
+      },
+      {
+        question: 'मैं कैंसल कैसे करूँ?',
+        answer:
+          'Netflix बहुत आसान और लचीला है. कोई कॉन्ट्रैक्ट नहीं और कोई कैंसलेशन फ़ीस नहीं. आप अपने अकाउंट को ऑनलाइन कभी भी कैंसल कर सकते हैं.',
+      },
+      {
+        question: 'मैं Netflix पर क्या देख सकता हूँ?',
+        answer:
+          'Netflix पर फ़िल्मों, टीवी शो, एनीमे, डॉक्युमेंट्रीज़ और अन्य मनोरंजन की एक बहुत बड़ी लाइब्रेरी उपलब्ध है.',
+      },
+      {
+        question: 'क्या Netflix बच्चों के लिए अच्छा है?',
+        answer:
+          'Netflix बच्चों के लिए विशेष प्रोफ़ाइल और पैरेंटल कंट्रोल की सुविधा देता है ताकि बच्चे सुरक्षित मनोरंजन का आनंद ले सकें.',
+      },
+    ],
   },
-  {
-    title: 'Watch everywhere',
-    description:
-      'Stream unlimited movies and TV shows on your phone, tablet, laptop and TV.',
-    image: 'box3netfliximage-removebg-preview.png',
-  },
-  {
-    title: 'Create profiles for kids',
-    description:
-      'Send kids on adventures with their favourite characters in a space made just for them — free with your membership.',
-    image: 'box4netfliximage-removebg-preview.png',
-  },
-];
-
-//use of Javascript here to make button working 
-const faqs = [
-  {
-    question: 'What is Netflix?',
-    answer:
-      'Netflix is a streaming service offering a wide variety of TV shows, movies, documentaries and more.',
-  },
-  {
-    question: 'How much does Netflix cost?',
-    answer:
-      'Plans and prices depend on the membership offered in your region. Visit the official Netflix website for current pricing.',
-  },
-  {
-    question: 'Where can I watch?',
-    answer:
-      'You can watch on supported smart TVs, phones, tablets, computers and other compatible devices.',
-  },
-  {
-    question: 'How do I cancel?',
-    answer:
-      'You can manage or cancel your membership through your account settings on the official Netflix website.',
-  },
-  {
-    question: 'What can I watch on Netflix?',
-    answer:
-      'Netflix offers movies, series, documentaries, and other entertainment. Availability varies by region.',
-  },
-  {
-    question: 'Is Netflix good for kids?',
-    answer:
-      'Netflix offers kids profiles and parental controls to help families manage what children can watch.',
-  },
-];
+};
 
 function Home() {
+  const [language, setLanguage] = useState('English');
   const carouselRef = useRef(null);
+
+  const t = content[language];
 
   const handleScroll = (direction) => {
     if (carouselRef.current) {
@@ -134,12 +261,12 @@ function Home() {
     const email = event.currentTarget.querySelector('input').value.trim();
 
     if (!email) {
-      alert('Please enter your email address.');
+      alert(t.emailRequiredAlert);
       return;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      alert('Please enter a valid email address.');
+      alert(t.emailValidAlert);
       return;
     }
 
@@ -165,7 +292,8 @@ function Home() {
               <select
                 className="language-select"
                 aria-label="Select language"
-                defaultValue="English"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
               >
                 <option value="English">English</option>
                 <option value="Hindi">हिंदी</option>
@@ -178,34 +306,29 @@ function Home() {
                   window.location.href = '/login';
                 }}
               >
-                Sign In
+                {t.signIn}
               </button>
             </div>
           </nav>
 
           <div className="hero-content">
-            <h1>Unlimited movies, TV shows and more</h1>
+            <h1>{t.heroTitle}</h1>
 
-            <p className="hero-subtitle">
-              Watch anywhere. Cancel anytime.
-            </p>
+            <p className="hero-subtitle">{t.heroSubtitle}</p>
 
-            <p className="hero-description">
-              Ready to watch? Enter your email to create or restart your
-              membership.
-            </p>
+            <p className="hero-description">{t.heroDescription}</p>
 
             <form className="email-form" onSubmit={handleGetStarted}>
               <input
                 type="email"
-                placeholder="Email address"
-                aria-label="Email address"
+                placeholder={t.emailPlaceholder}
+                aria-label={t.emailPlaceholder}
                 autoComplete="email"
                 required
               />
 
               <button className="get-started-btn" type="submit">
-                Get Started <span aria-hidden="true">›</span>
+                {t.getStarted} <span aria-hidden="true">›</span>
               </button>
             </form>
           </div>
@@ -218,7 +341,7 @@ function Home() {
       </div>
 
       <section className="trending-section">
-        <h2>Trending Now</h2>
+        <h2>{t.trendingTitle}</h2>
 
         <div className="trending-wrapper">
           <button
@@ -262,10 +385,10 @@ function Home() {
       </section>
 
       <section className="features-section">
-        <h2>More reasons to join</h2>
+        <h2>{t.reasonsTitle}</h2>
 
         <div className="features-grid">
-          {features.map((feature) => (
+          {t.features.map((feature) => (
             <article className="feature-card" key={feature.title}>
               <h3>{feature.title}</h3>
               <p>{feature.description}</p>
@@ -279,10 +402,10 @@ function Home() {
       </section>
 
       <section className="faq-section">
-        <h2>Frequently Asked Questions</h2>
+        <h2>{t.faqTitle}</h2>
 
         <div className="faq-list">
-          {faqs.map((faq) => (
+          {t.faqs.map((faq) => (
             <details className="faq-item" key={faq.question}>
               <summary>
                 <span>{faq.question}</span>
@@ -297,22 +420,19 @@ function Home() {
         </div>
 
         <div className="bottom-cta">
-          <p>
-            Ready to watch? Enter your email to create or restart your
-            membership.
-          </p>
+          <p>{t.heroDescription}</p>
 
           <form className="email-form" onSubmit={handleGetStarted}>
             <input
               type="email"
-              placeholder="Email address"
-              aria-label="Email address"
+              placeholder={t.emailPlaceholder}
+              aria-label={t.emailPlaceholder}
               autoComplete="email"
               required
             />
 
             <button className="get-started-btn" type="submit">
-              Get Started <span aria-hidden="true">›</span>
+              {t.getStarted} <span aria-hidden="true">›</span>
             </button>
           </form>
         </div>
@@ -320,50 +440,48 @@ function Home() {
 
       <footer className="footer">
         <p className="contact-text">
-          Questions? Call <a href="tel:0008009191743">000-800-919-1743</a>
+          {t.contactText} <a href="tel:0008009191743">000-800-919-1743</a>
         </p>
 
         <div className="footer-links">
           <ul>
-            <li><a href="#faq">FAQ</a></li>
-            <li><a href="https://media.netflix.com/">Media Center</a></li>
-            <li><a href="https://www.netflix.com/">Ways to Watch</a></li>
-            <li><a href="https://www.netflix.com/">Cookie Preferences</a></li>
-            <li><a href="https://fast.com/">Speed Test</a></li>
+            <li><a href="#faq">{t.faqLink}</a></li>
+            <li><a href="https://media.netflix.com/">{t.mediaCenter}</a></li>
+            <li><a href="https://www.netflix.com/">{t.waysToWatch}</a></li>
+            <li><a href="https://www.netflix.com/">{t.cookiePreferences}</a></li>
+            <li><a href="https://fast.com/">{t.speedTest}</a></li>
           </ul>
 
           <ul>
-            <li><a href="https://help.netflix.com/">Help Centre</a></li>
-            <li><a href="https://ir.netflix.net/">Investor Relations</a></li>
-            <li><a href="https://help.netflix.com/legal/termsofuse">Terms of Use</a></li>
-            <li><a href="https://about.netflix.com/">Corporate Information</a></li>
-            <li><a href="https://help.netflix.com/">Legal Notices</a></li>
+            <li><a href="https://help.netflix.com/">{t.helpCentre}</a></li>
+            <li><a href="https://ir.netflix.net/">{t.investorRelations}</a></li>
+            <li><a href="https://help.netflix.com/legal/termsofuse">{t.termsOfUse}</a></li>
+            <li><a href="https://about.netflix.com/">{t.corporateInformation}</a></li>
+            <li><a href="https://help.netflix.com/">{t.legalNotices}</a></li>
           </ul>
 
           <ul>
-            <li><a href="https://www.netflix.com/YourAccount">Account</a></li>
-            <li><a href="https://jobs.netflix.com/">Jobs</a></li>
-            <li><a href="https://help.netflix.com/">Privacy</a></li>
-            <li><a href="https://help.netflix.com/">Contact Us</a></li>
-            <li><a href="https://www.netflix.com/">Only on Netflix</a></li>
+            <li><a href="https://www.netflix.com/YourAccount">{t.account}</a></li>
+            <li><a href="https://jobs.netflix.com/">{t.jobs}</a></li>
+            <li><a href="https://help.netflix.com/">{t.privacy}</a></li>
+            <li><a href="https://help.netflix.com/">{t.contactUs}</a></li>
+            <li><a href="https://www.netflix.com/">{t.onlyOnNetflix}</a></li>
           </ul>
         </div>
 
         <select
           className="footer-language"
           aria-label="Select footer language"
-          defaultValue="English"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
         >
           <option value="English">English</option>
           <option value="Hindi">हिंदी</option>
         </select>
 
-        <p className="country-name">Netflix India</p>
+        <p className="country-name">{t.country}</p>
 
-        <p className="recaptcha-text">
-          This page is a student-made Netflix-style clone and is not an
-          official Netflix website.
-        </p>
+        <p className="recaptcha-text">{t.disclaimer}</p>
       </footer>
     </div>
   );
