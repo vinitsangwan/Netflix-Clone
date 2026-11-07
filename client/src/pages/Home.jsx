@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
 const trendingItems = [
@@ -57,6 +58,7 @@ const trendingItems = [
 const content = {
   English: {
     signIn: 'Sign In',
+    searchPlaceholder: 'Search movies...',
     heroTitle: 'Unlimited movies, TV shows and more',
     heroSubtitle: 'Watch anywhere. Cancel anytime.',
     heroDescription:
@@ -148,6 +150,7 @@ const content = {
   },
   Hindi: {
     signIn: 'साइन इन करें',
+    searchPlaceholder: 'फ़िल्में खोजें...',
     heroTitle: 'अनलिमिटेड फ़िल्में, टीवी शो और बहुत कुछ',
     heroSubtitle: 'जहाँ चाहें देखें. जब चाहें कैंसल करें.',
     heroDescription:
@@ -241,9 +244,18 @@ const content = {
 
 function Home() {
   const [language, setLanguage] = useState('English');
+  const [searchQuery, setSearchQuery] = useState('');
   const carouselRef = useRef(null);
+  const navigate = useNavigate();
 
   const t = content[language];
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   const handleScroll = (direction) => {
     if (carouselRef.current) {
@@ -289,6 +301,24 @@ function Home() {
             </a>
 
             <div className="nav-actions">
+              <form className="nav-search-form" onSubmit={handleSearchSubmit}>
+                <input
+                  type="text"
+                  className="nav-search-input"
+                  placeholder={t.searchPlaceholder}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  aria-label="Search movies"
+                />
+                <button
+                  className="nav-search-btn"
+                  type="submit"
+                  aria-label="Search"
+                >
+                  🔍
+                </button>
+              </form>
+
               <select
                 className="language-select"
                 aria-label="Select language"
