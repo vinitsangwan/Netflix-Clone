@@ -5,6 +5,7 @@ const cors = require("cors");// This line imports the CORS middleware, which all
 const connectDB = require("./config/db");//this line imports a custom module that handles the connection to the MongoDB database, ensuring that the server can interact with the database for data storage and retrieval.
 const authRoutes = require("./routes/authRoutes");
 const watchlistRoutes = require("./routes/watchlistRoutes");
+const preferenceRoutes = require("./routes/preferenceRoutes");
 
 const app = express();
 
@@ -40,6 +41,12 @@ app.use("/api/auth", authRoutes);
 app.use("/auth", authRoutes);
 app.use("/api/watchlist", watchlistRoutes);
 app.use("/watchlist", watchlistRoutes);
+app.use("/api/preferences", preferenceRoutes);
+app.use("/preferences", preferenceRoutes);
+app.use("/api/recommendations", (req, res, next) => {
+    req.url = "/recommendations";
+    preferenceRoutes(req, res, next);
+});
 
 app.get("/", (req, res) => {
     res.send("Netflix Clone Backend is Running!");

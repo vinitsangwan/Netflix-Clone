@@ -64,7 +64,42 @@ export default function Search() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [watchlistStatus, setWatchlistStatus] = useState({});
   const navigate = useNavigate();
+
+  const handleAddToWatchlist = async (movie) => {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      alert('Please Sign In to add movies to your personal Watchlist!');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/watchlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          movieId: movie.id,
+          title: movie.title,
+          posterPath: movie.poster_path || '',
+          releaseDate: movie.release_date || '',
+          genreIds: movie.genre_ids || [],
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok || data.success) {
+        setWatchlistStatus((prev) => ({ ...prev, [movie.id]: 'added' }));
+      } else if (res.status === 409) {
+        setWatchlistStatus((prev) => ({ ...prev, [movie.id]: 'exists' }));
+      }
+    } catch (e) {
+      console.error('Add watchlist error:', e);
+    }
+  };
 
   useEffect(() => {
     setSearchTerm(queryFromUrl);
@@ -96,7 +131,27 @@ export default function Search() {
           throw new Error('Failed to fetch from TMDB API');
         }
         const data = await response.json();
-        setMovies(data.results || []);
+        const results = data.results || [];
+        setMovies(results);
+
+        // Track search preference in MongoDB if user is logged in
+        const token = sessionStorage.getItem('token');
+        if (token && results.length > 0) {
+          const topMatch = results[0];
+          fetch('/api/preferences/search', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              query: queryFromUrl,
+              movieId: topMatch.id,
+              title: topMatch.title,
+              genreIds: topMatch.genre_ids || [],
+            }),
+          }).catch((e) => console.error('Preference track error:', e));
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -227,6 +282,17 @@ export default function Search() {
                 <div className="movie-info-box">
                   <h3 className="movie-title">{movie.title}</h3>
                   {year && <span className="movie-year">{year}</span>}
+
+                  <button
+                    type="button"
+                    className={`search-watchlist-btn ${
+                      watchlistStatus[movie.id] ? 'in-watchlist' : ''
+                    }`}
+                    onClick={() => handleAddToWatchlist(movie)}
+                  >
+                    {watchlistStatus[movie.id] ? '✓ In Watchlist' : '+ Add to Watchlist'}
+                  </button>
+
                   <p className="movie-overview">
                     {movie.overview || 'No synopsis available for this title.'}
                   </p>

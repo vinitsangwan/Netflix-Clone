@@ -1,11 +1,11 @@
 
-require("dotenv").config();
-
-const express = require("express");
-const cors = require("cors");
-const connectDB = require("./config/db");
+require("dotenv").config();// This line loads environment variables from a .env file into process.env, allowing the application to access sensitive information like database connection strings and secret keys without hardcoding them into the source code.
+const express = require("express");// This line imports the Express framework, which is used to create the server and handle HTTP requests and responses.
+const cors = require("cors");// This line imports the CORS middleware, which allows the server to handle cross-origin requests from different domains, enabling the frontend and backend to communicate seamlessly.
+const connectDB = require("./config/db");//this line imports a custom module that handles the connection to the MongoDB database, ensuring that the server can interact with the database for data storage and retrieval.
 const authRoutes = require("./routes/authRoutes");
 const watchlistRoutes = require("./routes/watchlistRoutes");
+const preferenceRoutes = require("./routes/preferenceRoutes");
 
 const app = express();
 
@@ -41,6 +41,12 @@ app.use("/api/auth", authRoutes);
 app.use("/auth", authRoutes);
 app.use("/api/watchlist", watchlistRoutes);
 app.use("/watchlist", watchlistRoutes);
+app.use("/api/preferences", preferenceRoutes);
+app.use("/preferences", preferenceRoutes);
+app.use("/api/recommendations", (req, res, next) => {
+    req.url = "/recommendations";
+    preferenceRoutes(req, res, next);
+});
 
 app.get("/", (req, res) => {
     res.send("Netflix Clone Backend is Running!");

@@ -1,6 +1,7 @@
 
 const express = require("express");
 const Watchlist = require("../models/Watchlist");
+const UserPreference = require("../models/UserPreference");
 const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -31,7 +32,7 @@ router.post("/", async (req, res) => {
     try {
         const { movieId, title, posterPath, releaseDate } = req.body;
 
-        if(
+        if (
             !Number.isSafeInteger(movieId) ||
             movieId <= 0 ||
             typeof title !== "string" ||
@@ -50,6 +51,35 @@ router.post("/", async (req, res) => {
             posterPath,
             releaseDate
         });
+
+        // Update UserPreference (+3 points for watchlist action)
+        try {
+            const genreIds = Array.isArray(req.body.genreIds) ? req.body.genreIds : [];
+            let preference = await UserPreference.findOne({ user: req.userId });
+            if (!preference) {
+                preference = new UserPreference({
+                    user: req.userId,
+                    genreScores: {},
+                    searchedMovies: [],
+                    excludedMovieIds: []
+                });
+            }
+
+            if (!preference.excludedMovieIds.includes(movieId)) {
+                preference.excludedMovieIds.push(movieId);
+            }
+
+            // Award +3 score for each genre
+            genreIds.forEach((gid) => {
+                const key = String(gid);
+                const currentScore = preference.genreScores.get(key) || 0;
+                preference.genreScores.set(key, currentScore + 3);
+            });
+
+            await preference.save();
+        } catch (prefErr) {
+            console.error("Preference update error on watchlist add:", prefErr.message);
+        }
 
         res.status(201).json({
             success: true,
@@ -84,6 +114,16 @@ router.delete("/:movieId", async (req, res) => {
                 success: false,
                 message: "Movie not found in your watchlist"
             });
+        }
+
+        // Clean up excludedMovieIds in UserPreference
+        try {
+            await UserPreference.updateOne(
+                { user: req.userId },
+                { $pull: { excludedMovieIds: movie.movieId } }
+            );
+        } catch (cleanErr) {
+            console.error("Clean excluded movie error:", cleanErr.message);
         }
 
         res.status(200).json({

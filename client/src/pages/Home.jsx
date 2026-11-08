@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
@@ -245,10 +245,67 @@ const content = {
 function Home() {
   const [language, setLanguage] = useState('English');
   const [searchQuery, setSearchQuery] = useState('');
-  const carouselRef = useRef(null);
-  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [recommendations, setRecommendations] = useState(null);
+  const [loadingRecs, setLoadingRecs] = useState(false);
 
+  const carouselRef = useRef(null);
+  const recRef = useRef(null);
+  const searchRecRef = useRef(null);
+  const watchlistRecRef = useRef(null);
+
+  const navigate = useNavigate();
   const t = content[language];
+
+  useEffect(() => {
+    try {
+      const storedUser = sessionStorage.getItem('user');
+      const token = sessionStorage.getItem('token');
+      if (storedUser && token) {
+        setCurrentUser(JSON.parse(storedUser));
+        fetchRecommendations(token);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+  const fetchRecommendations = async (token) => {
+    setLoadingRecs(true);
+    try {
+      const res = await fetch('/api/recommendations', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setRecommendations(data);
+      }
+    } catch (err) {
+      console.error('Fetch recommendations error:', err);
+    } finally {
+      setLoadingRecs(false);
+    }
+  };
+
+  const handleSignOut = () => {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    setCurrentUser(null);
+    setRecommendations(null);
+    window.location.reload();
+  };
+
+  const scrollRow = (ref, direction) => {
+    if (ref.current) {
+      const scrollAmount = ref.current.clientWidth * 0.75;
+      ref.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -329,15 +386,30 @@ function Home() {
                 <option value="Hindi">हिंदी</option>
               </select>
 
-              <button
-                className="sign-in-btn"
-                type="button"
-                onClick={() => {
-                  window.location.href = '/login';
-                }}
-              >
-                {t.signIn}
-              </button>
+              {currentUser ? (
+                <div className="user-nav-actions">
+                  <span className="user-nav-name" title={currentUser.email}>
+                    {currentUser.name || currentUser.email.split('@')[0]}
+                  </span>
+                  <button
+                    className="sign-out-btn"
+                    type="button"
+                    onClick={handleSignOut}
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="sign-in-btn"
+                  type="button"
+                  onClick={() => {
+                    window.location.href = '/login';
+                  }}
+                >
+                  {t.signIn}
+                </button>
+              )}
             </div>
           </nav>
 
@@ -413,6 +485,197 @@ function Home() {
           </button>
         </div>
       </section>
+
+      {/* Personalized Recommendations Section for Logged-In Users */}
+      {currentUser && (
+        <section className="recommendations-container">
+          {loadingRecs && (
+            <div className="recs-loading">
+              <p>Personalizing movie recommendations for {currentUser.name || 'you'}...</p>
+            </div>
+          )}
+
+          {recommendations && recommendations.coldStart && (
+            <div className="recs-coldstart-banner">
+              <span className="coldstart-icon">✨</span>
+              <div>
+                <h4>Welcome, {currentUser.name || 'Friend'}!</h4>
+                <p>
+                  Start searching for movies or adding them to your Watchlist to unlock your personalized recommendation rows here.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Row 1: Top Recommendations for You */}
+          {recommendations && recommendations.recommendedForYou && recommendations.recommendedForYou.length > 0 && (
+            <div className="rec-section">
+              <div className="rec-section-header">
+                <h2>Top Recommendations for You</h2>
+                <span className="rec-badge">Personalized</span>
+              </div>
+              <div className="trending-wrapper">
+                <button
+                  className="carousel-btn prev-btn"
+                  onClick={() => scrollRow(recRef, 'left')}
+                  aria-label="Previous"
+                  type="button"
+                >
+                  ‹
+                </button>
+                <div className="trending-list rec-list" ref={recRef}>
+                  {recommendations.recommendedForYou.map((movie) => (
+                    <a
+                      href={`https://www.netflix.com/search?q=${encodeURIComponent(movie.title)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rec-movie-card"
+                      key={`rec-${movie.id}`}
+                      title={movie.title}
+                    >
+                      <div className="rec-poster-box">
+                        <img
+                          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                          alt={movie.title}
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                        />
+                        {movie.vote_average > 0 && (
+                          <span className="rec-rating">★ {movie.vote_average.toFixed(1)}</span>
+                        )}
+                      </div>
+                      <div className="rec-card-info">
+                        <h4>{movie.title}</h4>
+                        <span>{movie.release_date ? movie.release_date.substring(0, 4) : ''}</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+                <button
+                  className="carousel-btn next-btn"
+                  onClick={() => scrollRow(recRef, 'right')}
+                  aria-label="Next"
+                  type="button"
+                >
+                  ›
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Row 2: Because You Searched for [Top Genre] */}
+          {recommendations && recommendations.basedOnSearch && recommendations.basedOnSearch.length > 0 && (
+            <div className="rec-section">
+              <div className="rec-section-header">
+                <h2>Because You Searched for {recommendations.topGenreName || 'Movies'}</h2>
+                <span className="rec-badge search-badge">Based on Searches</span>
+              </div>
+              <div className="trending-wrapper">
+                <button
+                  className="carousel-btn prev-btn"
+                  onClick={() => scrollRow(searchRecRef, 'left')}
+                  aria-label="Previous"
+                  type="button"
+                >
+                  ‹
+                </button>
+                <div className="trending-list rec-list" ref={searchRecRef}>
+                  {recommendations.basedOnSearch.map((movie) => (
+                    <a
+                      href={`https://www.netflix.com/search?q=${encodeURIComponent(movie.title)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rec-movie-card"
+                      key={`search-rec-${movie.id}`}
+                      title={movie.title}
+                    >
+                      <div className="rec-poster-box">
+                        <img
+                          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                          alt={movie.title}
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                        />
+                        {movie.vote_average > 0 && (
+                          <span className="rec-rating">★ {movie.vote_average.toFixed(1)}</span>
+                        )}
+                      </div>
+                      <div className="rec-card-info">
+                        <h4>{movie.title}</h4>
+                        <span>{movie.release_date ? movie.release_date.substring(0, 4) : ''}</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+                <button
+                  className="carousel-btn next-btn"
+                  onClick={() => scrollRow(searchRecRef, 'right')}
+                  aria-label="Next"
+                  type="button"
+                >
+                  ›
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Row 3: Based on Your Watchlist */}
+          {recommendations && recommendations.basedOnWatchlist && recommendations.basedOnWatchlist.length > 0 && (
+            <div className="rec-section">
+              <div className="rec-section-header">
+                <h2>Based on Your Watchlist</h2>
+                <span className="rec-badge watchlist-badge">Watchlist Picks</span>
+              </div>
+              <div className="trending-wrapper">
+                <button
+                  className="carousel-btn prev-btn"
+                  onClick={() => scrollRow(watchlistRecRef, 'left')}
+                  aria-label="Previous"
+                  type="button"
+                >
+                  ‹
+                </button>
+                <div className="trending-list rec-list" ref={watchlistRecRef}>
+                  {recommendations.basedOnWatchlist.map((movie) => (
+                    <a
+                      href={`https://www.netflix.com/search?q=${encodeURIComponent(movie.title)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rec-movie-card"
+                      key={`wl-rec-${movie.id}`}
+                      title={movie.title}
+                    >
+                      <div className="rec-poster-box">
+                        <img
+                          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                          alt={movie.title}
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                        />
+                        {movie.vote_average > 0 && (
+                          <span className="rec-rating">★ {movie.vote_average.toFixed(1)}</span>
+                        )}
+                      </div>
+                      <div className="rec-card-info">
+                        <h4>{movie.title}</h4>
+                        <span>{movie.release_date ? movie.release_date.substring(0, 4) : ''}</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+                <button
+                  className="carousel-btn next-btn"
+                  onClick={() => scrollRow(watchlistRecRef, 'right')}
+                  aria-label="Next"
+                  type="button"
+                >
+                  ›
+                </button>
+              </div>
+            </div>
+          )}
+        </section>
+      )}
 
       <section className="features-section">
         <h2>{t.reasonsTitle}</h2>
