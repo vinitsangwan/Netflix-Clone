@@ -23,19 +23,19 @@ It also features user authentication, a personal watchlist, and a responsive int
 
 ## ✨ Features
 
-- 🎬 Netflix-inspired responsive UI.
-- 🔍 Movie search using TMDB API.
-- 🎥 Dynamic movie data and posters.
-- 🔗 External movie-related links.
-- 🔐 User registration and login.
-- 🔑 JWT-based authentication.
-- ⭐ Personal watchlist management.
-- 🗄️ MongoDB database integration.
+- 🎬 Netflix-inspired responsive UI
+- 🔍 Movie search using TMDB API
+- 🎥 Dynamic movie data and posters
+- 🔗 External movie-related links
+- 🔐 User registration and login
+- 🔑 JWT-based authentication
+- ⭐ Personal watchlist management
+- 🗄️ MongoDB database integration
 
 ## 🛠️ Tech Stack
 
 | Category | Technologies |
-|---|---|
+|:---|:---|
 | Frontend | React.js, Vite, HTML, CSS, JavaScript |
 | Backend | Node.js, Express.js |
 | Database | MongoDB, Mongoose |
@@ -69,87 +69,85 @@ Netflix-Clone/
 
 ## ⚙️ Getting Started
 
-**1. Clone the repository**
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/vinitsangwan/Netflix-Clone.git
 cd Netflix-Clone
 ```
 
-**2. Install dependencies**
+### 2. Install Dependencies
 
+**Frontend**
 ```bash
 cd client
 npm install
 ```
 
+**Backend**
 ```bash
 cd server
 npm install
 ```
 
-**3. Configure environment variables**
+### 3. Configure Environment Variables
 
-Create `.env` files in the client and server directories with the required configuration.
+Create `.env` files in the client and server directories.
 
-Server:
+**Server `.env`**
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
 ```
 
-Client:
+**Client `.env`**
 ```env
 VITE_API_URL=http://localhost:5000
 ```
 
-Configure your TMDB API credentials using the variable names expected by your application.
+Configure TMDB API credentials using the environment variable names expected by your application.
 
-**4. Run the application**
+### 4. Run the Application
 
-Start the backend:
-
+**Backend**
 ```bash
 cd server
 npm run dev
 ```
 
-Start the frontend in another terminal:
-
+**Frontend (in a new terminal)**
 ```bash
 cd client
 npm run dev
 ```
 
-## 📸 Screenshots
-
-<!-- Add actual application screenshots in the screenshots folder -->
-
-![Homepage](screenshots/homepage.png)
-
-![Movie Search](screenshots/search.png)
-
 ## 🚀 Future Improvements
 
-- Advanced movie filtering and sorting.
-- Personalised movie recommendations.
-- Enhanced user profile management.
-- Improved movie details pages.
+- Advanced movie filtering and sorting
+- Personalised movie recommendations
+- Enhanced user profile management
+- Improved movie details pages
 
 ## 👨‍💻 Author
 
-**Vinit Sangwan**
+<div align="center">
 
-B.Tech Computer Engineering | Army Institute of Technology, Pune
+### Vinit Sangwan
 
-- GitHub: [vinitsangwan](https://github.com/vinitsangwan)
-- LinkedIn: [Connect with me](https://www.linkedin.com/)
+**B.Tech Computer Engineering**  
+Army Institute of Technology, Pune
+
+[![GitHub](https://img.shields.io/badge/GitHub-vinitsangwan-black?style=flat&logo=github)](https://github.com/vinitsangwan)
+
+</div>
 
 ---
 
 <div align="center">
 
-**If you like this project, don't forget to ⭐ the repository!**
-**Built with ❤️ by Vinit Sangwan**
+**⭐ If you like this project, don't forget to star the repository!**
+
+Made with ❤️ by **Vinit Sangwan**
+
 </div>
